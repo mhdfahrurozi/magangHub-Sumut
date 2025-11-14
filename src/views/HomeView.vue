@@ -442,7 +442,7 @@ export default {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "jobs_backup.json";
+      a.download = "MagangHub-Batch2(sumut).json";
       a.click();
     },
     async exportToExcel() {
