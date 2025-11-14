@@ -27,7 +27,7 @@
         </div>
 
       </div>
-      <p class="text-lg font-bold">{{ loading ? '" Sedang mengambil data... harap menunggu ^_^ "' : 'Data berhasil di load semua ✅' }}</p>
+      <p class="text-base sm:text-lg font-bold">{{ loading ? 'Sedang mengambil data... harap menunggu ^_^' : 'Data berhasil di load semua ✅' }}</p>
 
     </header>
 
@@ -35,9 +35,9 @@
       
      <h2 class="text-xl font-semibold text-gray-800 mb-6">Daftar Lowongan MagangHub</h2>
       
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 space-y-4 sm:space-y-0">
+      <div class="flex flex-col sm:flex-row flex-wrap justify-between items-start sm:items-center mb-8 space-y-4 sm:space-y-0">
         
-        <div class="flex items-center space-x-4">
+        <div class="flex flex-wrap items-center space-x-4 mb-2">
           <p class="text-gray-500 font-medium">Ditemukan {{ totalJob }} lowongan</p>
 
 
@@ -100,6 +100,7 @@
             </svg>
             Export XLSX
           </button>
+
         </div>
       </div>
 
@@ -163,9 +164,9 @@
         <div>
           <p class="text-sm text-gray-700">
             Showing
-            <span class="font-medium">1</span>
+            <span class="font-medium">{{ startItemIndex }}</span>
             to
-            <span class="font-medium">10</span>
+            <span class="font-medium">{{ endItemIndex }}</span>
             of
             <span class="font-medium">{{ totalJob }}</span>
             results
@@ -259,6 +260,29 @@ export default {
   }, computed: {
     totalPages() {
       return Math.ceil(this.filteredJobs.length / this.perPage);
+    },
+    startItemIndex() {
+      // Menghitung indeks data awal yang ditampilkan.
+      // Jika perPage adalah "semua" (perPage = filteredJobs.length), ini akan kembali ke 1.
+      if (this.perPage === this.filteredJobs.length) {
+          return 1;
+      }
+      
+      // Rumus standar: (currentPage - 1) * perPage + 1
+      const start = (this.currentPage - 1) * this.perPage + 1;
+      
+      // Pastikan tidak lebih dari total data jika data kosong
+      return this.filteredJobs.length === 0 ? 0 : start;
+    },
+    endItemIndex() {
+      if (this.filteredJobs.length === 0) {
+        return 0;
+      }
+      // Menghitung indeks data akhir yang ditampilkan.
+      const end = this.currentPage * this.perPage;
+      
+      // Gunakan nilai yang lebih kecil antara hasil perhitungan atau total jumlah data yang difilter.
+      return Math.min(end, this.filteredJobs.length);
     },
     paginatedPages(){
       const total = this.totalPages;
@@ -522,7 +546,6 @@ export default {
         this.updatePagination();
       }
     },
-
 
 
 
