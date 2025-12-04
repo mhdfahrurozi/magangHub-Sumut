@@ -3,8 +3,8 @@
 
     <header class="bg-linear-to-r from-blue-600 to-cyan-500 py-20 text-white flex flex-col items-center justify-center shadow-lg">
       <div class="w-full max-w-4xl px-4 text-center">
-          <h1 class="text-4xl font-bold mb-2">Lowongan Magang di Sumatera Utara</h1>
-          <p class="text-lg mb-8">Jelajahi berbagai lowongan magang yang sesuai dengan minat dan keahlianmu ~by Mhd Fahru Rozi</p>
+          <h1 class="text-4xl font-bold mb-2">Lowongan Magang BATCH 2 di Sumatera Utara</h1>
+          <p class="text-lg mb-8">Jelajahi berbagai lowongan magang yang sesuai dengan minat dan keahlianmu</p>
       </div>
       
 
@@ -231,7 +231,16 @@
 
 
     </main>
+
+    
+  <Footer>
+    <div class="bg-linear-to-r from-blue-600 to-cyan-500 py-10 text-white flex flex-col items-center justify-center shadow-lg">
+     © 2025 | Created By M Fahru Rozi | kodeku.site
+    </div>
+  </Footer>
+
   </div>
+
 </template>
 
 <script>
@@ -336,7 +345,7 @@ export default {
    this.getData()
   }, methods: {
     async getData() {
-      const baseUrl = "https://maganghub.kemnaker.go.id/be/v1/api/list/vacancies-aktif";
+      const baseUrl = "https://maganghub.kemnaker.go.id/be/v1/api/list/vacancies-aktif//Batch2";
       const limit = 20;
       const kodeProvinsi = 12;
 
@@ -351,11 +360,12 @@ export default {
 
 
           // timeout 10 detik supaya cepat fallback kalau API bermasalah
-          const res = await axios.get(url, { timeout: 10000 });
+          const res = await axios.get(url, { timeout: 10000000 });
           const data = res.data?.data || [];
 
           if (data.length === 0) break;
           buffer.push(...data);
+          console.log(`✅ Halaman ${page} (${data.length} data)`);
 
           if (page % 5 === 0) {
             // Urutkan berdasarkan created_at descending
@@ -364,6 +374,7 @@ export default {
             // Gabungkan dengan data lama
             this.jobs.push(...buffer);
             this.filteredJobs = this.jobs;
+            // this.paginatedJobs = this.jobs;
 
             // Kosongkan buffer
             buffer = [];
@@ -380,6 +391,7 @@ export default {
           buffer.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
           this.jobs.push(...buffer);
           this.filteredJobs = this.jobs;
+          // this.paginatedJobs = this.jobs;
         }
 
         if (this.jobs.length === 0) {
