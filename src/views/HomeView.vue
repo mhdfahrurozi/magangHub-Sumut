@@ -31,7 +31,11 @@
 
     </header>
 
-    <main class="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <main :class="[
+      'py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto',
+      {'mb-50' : loading}
+    ]
+    ">
       
      <h2 class="text-xl font-semibold text-gray-800 mb-6">Daftar Lowongan MagangHub</h2>
       
